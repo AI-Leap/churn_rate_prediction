@@ -17,7 +17,8 @@ logging.basicConfig(
 
 def test_import(import_data):
     '''
-    test data import - this example is completed for you to assist with the other test functions
+    test data import - this example is completed for you
+    to assist with the other test functions
     '''
     try:
         df = cls.import_data(import_data)
@@ -31,7 +32,10 @@ def test_import(import_data):
         assert df.shape[1] > 0
     except AssertionError as err:
         logging.error(
-            "Testing import_data: The file doesn't appear to have rows and columns")
+            "Testing import_data: \
+                The file doesn't appear to have rows and columns"
+        )
+
         raise err
 
 
@@ -43,17 +47,20 @@ def test_eda(perform_eda):
     files = os.listdir('./images/eda/')
     try:
         assert len(files) == 5
-        assert sorted(files) == [
+        assert sorted(files) == sorted([
             'churn_histogram.png',
             'customer_age.png',
             'heat_map.png',
             'marital_status.png',
             'total_trans_ct.png',
-            ]
+            ])
         logging.info("Testing perform_eda: SUCCESS")
     except AssertionError as err:
+        print(err)
         logging.error(
-            "Testing perform_eda: There are not required plot images in directory")
+            "Testing perform_eda: \
+                There are not required plot images in directory"
+        )
 
 
 def test_encoder_helper(encoder_helper):
@@ -116,11 +123,14 @@ def test_train_models(train_models):
         models = os.listdir('./models/')
 
         assert len(models) == 2
-        assert models == ['rfc_model.pkl', 'logistic_model.pkl']
+        assert sorted(models) == sorted(
+            ['rfc_model.pkl', 'logistic_model.pkl']
+        )
         logging.info("Testing train_models: SUCCESS")
     except Exception as err:
         logging.error(
-            "Testing train_models: There was an error while training the models")
+            "Testing train_models: \
+                There was an error while training the models")
         raise err
 
 
@@ -148,10 +158,14 @@ if __name__ == "__main__":
     data_frame = cls.encoder_helper(data_frame, cat_columns, None)
     test_perform_feature_engineering(data_frame)
 
-    [X_train, X_test, y_train, y_test] = cls.perform_feature_engineering(data_frame, 'Churn')
-    # test_train_models({
-    #     'X_train': X_train,
-    #     'X_test': X_test,
-    #     'y_train': y_train,
-    #     'y_test': y_test
-    # })
+    [X_train, X_test, y_train, y_test] = cls.perform_feature_engineering(
+        data_frame,
+        'Churn'
+    )
+
+    test_train_models({
+        'X_train': X_train,
+        'X_test': X_test,
+        'y_train': y_train,
+        'y_test': y_test
+    })

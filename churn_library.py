@@ -1,11 +1,12 @@
 # module docstring
 '''
 Author: Light
-Date Created: 03-Sept-2021 
+Date Created: 03-Sept-2021
 
 This module contains functions to:
 - Perform feature engineering on churn data
-- Build model using machine learning algorithms (for example Logistics Regresion, Random Forest)
+- Build model using machine learning algorithms
+    (for example Logistics Regresion, Random Forest)
 - Visualize ROC curve
 '''
 
@@ -84,13 +85,15 @@ def encode(data_frame, category):
 def encoder_helper(data_frame, category_lst, response):
     '''
     helper function to turn each categorical column into a new column with
-    propotion of churn for each category - associated with cell 15 from the notebook
+    propotion of churn for each category
+      - associated with cell 15 from the notebook
 
     input:
             data_frame: pandas dataframe
             category_lst: list of columns that contain categorical features
             response: string of response name
-            [optional argument that could be used for naming variables or index y column]
+            [optional argument that could be used for naming variables
+              or index y column]
 
     output:
             data_frame: pandas dataframe with new columns for
@@ -107,7 +110,8 @@ def perform_feature_engineering(data_frame, response):
     input:
               data_frame: pandas dataframe
               response: string of response name
-              [optional argument that could be used for naming variables or index y column]
+              [optional argument that could be used for naming variables
+                or index y column]
 
     output:
               X_train: X training data
@@ -171,8 +175,8 @@ def classification_report_image(y_train,
                                 y_test_preds_lr,
                                 y_test_preds_rf):
     '''
-    produces classification report for training and testing results and stores report as image
-    in images folder
+    produces classification report for training and testing results
+    and stores report as image in images folder
     input:
             y_train: training response values
             y_test:  test response values
@@ -193,7 +197,9 @@ def classification_report_image(y_train,
     # approach improved by OP -> monospace!
     plt.text(0.01, 0.6, str('Random Forest Test'), {
         'fontsize': 10}, fontproperties='monospace')
-    plt.text(0.01, 0.7, str(classification_report(y_train, y_train_preds_rf)), {
+    plt.text(0.01, 0.7, str(
+        classification_report(y_train, y_train_preds_rf)
+    ), {
         'fontsize': 10}, fontproperties='monospace')
     # approach improved by OP -> monospace!
     plt.axis('off')
@@ -202,14 +208,16 @@ def classification_report_image(y_train,
     plt.rc('figure', figsize=(5, 5))
     plt.text(0.01, 1.25, str('Logistic Regression Train'), {'fontsize': 10},
              fontproperties='monospace')
-    plt.text(0.01, 0.05, str(classification_report(y_train, y_train_preds_lr)), {'fontsize': 10},
-             fontproperties='monospace')
+    plt.text(0.01, 0.05, str(
+        classification_report(y_train, y_train_preds_lr)
+    ), {'fontsize': 10}, fontproperties='monospace')
     plt.text(0.01, 0.6, str('Logistic Regression Test'), {'fontsize': 10},
              fontproperties='monospace')
     plt.text(
         0.01, 0.7, str(
             classification_report(
-                y_test, y_test_preds_lr)), {'fontsize': 10}, fontproperties='monospace')
+                y_test, y_test_preds_lr
+            )), {'fontsize': 10}, fontproperties='monospace')
     plt.axis('off')
     plt.savefig('./images/results/lr_classification_report.png')
 
@@ -273,7 +281,7 @@ def train_models(X_train, X_test, y_train, y_test):
     '''
     # grid search
     rfc = RandomForestClassifier(random_state=42)
-    lrc = LogisticRegression()
+    lrc = LogisticRegression(solver='lbfgs', max_iter=100)
 
     param_grid = {
         'n_estimators': [200, 500],
@@ -322,8 +330,9 @@ if __name__ == '__main__':
     dataframe = import_data('./data/bank_data.csv')
     dataframe['Churn'] = dataframe['Attrition_Flag'].apply(
         lambda val: 0 if val == "Existing Customer" else 1)
-#     perform_eda(dataframe)
+    perform_eda(dataframe)
     dataframe = encoder_helper(dataframe, cat_columns, None)
 
-    [X_train, X_test, y_train, y_test] = perform_feature_engineering(dataframe, 'Churn')
+    [X_train, X_test, y_train, y_test] = \
+        perform_feature_engineering(dataframe, 'Churn')
     train_models(X_train, X_test, y_train, y_test)
