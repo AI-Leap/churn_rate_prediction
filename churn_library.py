@@ -1,8 +1,12 @@
 # module docstring
 '''
-This module contains functions for performing feature engineering and
-running machine learning algorithms on the churn data to produce
-logistic regression and random forest models.
+Author: Light
+Date Created: 03-Sept-2021 
+
+This module contains functions to:
+- Perform feature engineering on churn data
+- Build model using machine learning algorithms (for example Logistics Regresion, Random Forest)
+- Visualize ROC curve
 '''
 
 # import libraries
@@ -183,39 +187,29 @@ def classification_report_image(y_train,
     plt.rc('figure', figsize=(5, 5))
     # plt.text(0.01, 0.05, str(model.summary()), {'fontsize': 12}) old approach
     plt.text(0.01, 1.25, str('Random Forest Train'), {
-             'fontsize': 10}, fontproperties='monospace')
-    plt.text(
-        0.01, 0.05, str(
-            classification_report(
-                y_test, y_test_preds_rf)), {
-            'fontsize': 10}, fontproperties='monospace')
+        'fontsize': 10}, fontproperties='monospace')
+    plt.text(0.01, 0.05, str(classification_report(y_test, y_test_preds_rf)), {
+        'fontsize': 10}, fontproperties='monospace')
     # approach improved by OP -> monospace!
     plt.text(0.01, 0.6, str('Random Forest Test'), {
-             'fontsize': 10}, fontproperties='monospace')
-    plt.text(
-        0.01, 0.7, str(
-            classification_report(
-                y_train, y_train_preds_rf)), {
-            'fontsize': 10}, fontproperties='monospace')
+        'fontsize': 10}, fontproperties='monospace')
+    plt.text(0.01, 0.7, str(classification_report(y_train, y_train_preds_rf)), {
+        'fontsize': 10}, fontproperties='monospace')
     # approach improved by OP -> monospace!
     plt.axis('off')
     plt.savefig('./images/results/rf_classification_report.png')
 
     plt.rc('figure', figsize=(5, 5))
-    plt.text(0.01, 1.25, str('Logistic Regression Train'),
-             {'fontsize': 10}, fontproperties='monospace')
-    plt.text(
-        0.01, 0.05, str(
-            classification_report(
-                y_train, y_train_preds_lr)), {
-            'fontsize': 10}, fontproperties='monospace')
-    plt.text(0.01, 0.6, str('Logistic Regression Test'), {
-             'fontsize': 10}, fontproperties='monospace')
+    plt.text(0.01, 1.25, str('Logistic Regression Train'), {'fontsize': 10},
+             fontproperties='monospace')
+    plt.text(0.01, 0.05, str(classification_report(y_train, y_train_preds_lr)), {'fontsize': 10},
+             fontproperties='monospace')
+    plt.text(0.01, 0.6, str('Logistic Regression Test'), {'fontsize': 10},
+             fontproperties='monospace')
     plt.text(
         0.01, 0.7, str(
             classification_report(
-                y_test, y_test_preds_lr)), {
-            'fontsize': 10}, fontproperties='monospace')
+                y_test, y_test_preds_lr)), {'fontsize': 10}, fontproperties='monospace')
     plt.axis('off')
     plt.savefig('./images/results/lr_classification_report.png')
 
@@ -325,12 +319,11 @@ if __name__ == '__main__':
         'Income_Category',
         'Card_Category'
     ]
-    data_frame = import_data('./data/bank_data.csv')
-    data_frame['Churn'] = data_frame['Attrition_Flag'].apply(
+    dataframe = import_data('./data/bank_data.csv')
+    dataframe['Churn'] = dataframe['Attrition_Flag'].apply(
         lambda val: 0 if val == "Existing Customer" else 1)
-#     perform_eda(data_frame)
-    data_frame = encoder_helper(data_frame, cat_columns, None)
+#     perform_eda(dataframe)
+    dataframe = encoder_helper(dataframe, cat_columns, None)
 
-    [X_train, X_test, y_train,
-        y_test] = perform_feature_engineering(data_frame, 'Churn')
+    [X_train, X_test, y_train, y_test] = perform_feature_engineering(dataframe, 'Churn')
     train_models(X_train, X_test, y_train, y_test)

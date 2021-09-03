@@ -77,7 +77,7 @@ def test_encoder_helper(encoder_helper):
     except AssertionError as err:
         logging.error(
             "Testing encoder_helper: The number of categorical columns"
-                + "is not equal to the number of categorical columns")
+            + "is not equal to the number of categorical columns")
         raise err
 
 
@@ -97,7 +97,7 @@ def test_perform_feature_engineering(perform_feature_engineering):
     except AssertionError as err:
         logging.error(
             "Testing perform_feature_engineering: The number of rows"
-                + "in the training and testing data is not equal")
+            + "in the training and testing data is not equal")
         raise err
 
 
@@ -140,15 +140,14 @@ if __name__ == "__main__":
         'Card_Category'
     ]
     test_encoder_helper({
-      'df': data_frame,
-      'categories': cat_columns
+        'df': data_frame,
+        'categories': cat_columns
     })
 
     data_frame = cls.encoder_helper(data_frame, cat_columns, None)
     test_perform_feature_engineering(data_frame)
 
-    [X_train, X_test, y_train,
-        y_test] = cls.perform_feature_engineering(data_frame, 'Churn')
+    [X_train, X_test, y_train, y_test] = cls.perform_feature_engineering(data_frame, 'Churn')
     test_train_models({
         'X_train': X_train,
         'X_test': X_test,
